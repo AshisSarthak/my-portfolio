@@ -46,11 +46,17 @@ export const Signature = styled.a`
 export const Footer = styled.footer`
   display: flex;
   justify-content: space-between;
+  align-items: center;
   gap: 16px;
   padding: 18px 0 27px;
   border-top: 1px solid var(--rule);
   color: var(--muted);
   font-size: 0.68rem;
+
+  .social-links {
+    display: flex;
+    gap: 18px;
+  }
 
   a {
     color: inherit;
@@ -59,5 +65,11 @@ export const Footer = styled.footer`
 
   a:hover {
     color: var(--accent);
+  }
+
+  @media (max-width: 520px) {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 11px;
   }
 `

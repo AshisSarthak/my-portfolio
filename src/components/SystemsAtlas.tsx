@@ -27,15 +27,17 @@ const positions = {
 } as const
 
 export function SystemsAtlas() {
-  const [activeAreaId, setActiveAreaId] = useState<(typeof atlasAreas)[number]['id']>('systems')
-  const activeArea = atlasAreas.find((area) => area.id === activeAreaId) ?? atlasAreas[1]
+  const [activeAreaId, setActiveAreaId] = useState<(typeof atlasAreas)[number]['id']>('product')
+  const activeArea = atlasAreas.find((area) => area.id === activeAreaId) ?? atlasAreas[0]
 
   return (
     <Container>
       <AtlasHero id="top">
         <AtlasIntro>
-          <p>Principal Engineer · UI Architect</p>
-          <p><strong>Hyderabad, India</strong> · Open to meaningful challenges</p>
+          <div>
+            <p>Principal Engineer · UI Architect</p>
+            <p><strong>Hyderabad, India</strong> · Open to meaningful challenges</p>
+          </div>
         </AtlasIntro>
         <AtlasCanvas>
           <ConnectionMap viewBox="0 0 1000 620" preserveAspectRatio="none" aria-hidden="true">

@@ -31,7 +31,7 @@ export const AtlasIntro = styled.div`
 
 export const AtlasCanvas = styled.div`
   position: relative;
-  min-height: clamp(460px, 42vw, 580px);
+  min-height: clamp(420px, 36vw, 510px);
   overflow: hidden;
   border: 1px solid var(--rule);
   background-color: var(--atlas-surface);
@@ -42,7 +42,7 @@ export const AtlasCanvas = styled.div`
   isolation: isolate;
 
   @media (max-width: 700px) {
-    min-height: 480px;
+    min-height: 430px;
   }
 `
 
@@ -98,7 +98,7 @@ export const IdentityName = styled.h1`
   margin: 0;
   color: var(--ink);
   font-family: var(--display);
-  font-size: clamp(2.5rem, 4.2vw, 4rem);
+  font-size: clamp(2.1rem, 3.6vw, 3.2rem);
   font-weight: 500;
   line-height: 0.76;
   letter-spacing: -0.105em;
@@ -106,13 +106,13 @@ export const IdentityName = styled.h1`
 
   span:last-child {
     color: var(--accent);
-    font-size: 0.3em;
-    line-height: 1.2;
+    font-size: 0.667em;
+    line-height: 1;
     letter-spacing: 0.055em;
   }
 
   @media (max-width: 700px) {
-    font-size: clamp(2.1rem, 8.5vw, 3rem);
+    font-size: clamp(1.9rem, 7vw, 2.7rem);
   }
 `
 

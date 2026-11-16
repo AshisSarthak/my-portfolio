@@ -138,41 +138,6 @@ export const CaseStudyIndex = styled.span`
   letter-spacing: 0.12em;
 `
 
-export const CompactCareer = styled.details`
-  border-top: 1px solid var(--rule);
-  border-bottom: 1px solid var(--rule);
-
-  summary {
-    display: flex;
-    justify-content: space-between;
-    gap: 16px;
-    padding: 18px 0;
-    color: var(--ink);
-    cursor: pointer;
-    font-size: 0.8rem;
-    font-weight: 650;
-    list-style: none;
-  }
-
-  summary::-webkit-details-marker {
-    display: none;
-  }
-
-  summary::after {
-    content: '+';
-    color: var(--accent);
-    font-size: 1rem;
-  }
-
-  &[open] summary::after {
-    content: '−';
-  }
-
-  > div {
-    padding: 0 0 20px;
-  }
-`
-
 export const ContactBlock = styled.section`
   display: flex;
   align-items: end;

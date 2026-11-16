@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { ThemeProvider } from 'styled-components'
 import { Career } from './components/Career'
 import { Contact } from './components/Contact'
@@ -11,6 +11,9 @@ import { GlobalStyles } from './styles/GlobalStyles'
 import { isThemeName, themes, type ThemeName } from './theme'
 
 const themeStorageKey = 'ashis-portfolio-theme-v4'
+const Playground = lazy(() =>
+  import('./components/Playground').then(({ Playground: component }) => ({ default: component })),
+)
 
 function getInitialTheme(): ThemeName {
   const savedTheme = window.localStorage.getItem(themeStorageKey)
@@ -23,6 +26,7 @@ function getInitialTheme(): ThemeName {
 
 function App() {
   const [themeName, setThemeName] = useState<ThemeName>(getInitialTheme)
+  const [voiceModeOpen, setVoiceModeOpen] = useState(false)
 
   useEffect(() => {
     window.localStorage.setItem(themeStorageKey, themeName)
@@ -35,10 +39,20 @@ function App() {
         <SiteHeader
           themeName={themeName}
           onThemeChange={(nextTheme) => setThemeName(nextTheme)}
+          onVoiceOpen={() => setVoiceModeOpen(true)}
         />
         <main>
           <SystemsAtlas />
           <SelectedWork />
+          {voiceModeOpen && (
+            <Suspense fallback={null}>
+              <Playground
+                onThemeChange={(nextTheme) => setThemeName(nextTheme)}
+                voiceModeOpen={voiceModeOpen}
+                onVoiceClose={() => setVoiceModeOpen(false)}
+              />
+            </Suspense>
+          )}
           <Career />
           <Expertise />
           <Contact />

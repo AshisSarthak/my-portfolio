@@ -9,6 +9,12 @@ test('visitor can explore the portfolio and switch between light and dark themes
     (heading) => Number.parseFloat(getComputedStyle(heading).fontSize),
   )
   expect(desktopNameSize).toBeLessThan(65)
+  const heroNameScale = await page.getByRole('heading', { level: 1 }).evaluate((heading) => {
+    const [firstName, restOfName] = heading.children
+    return Number.parseFloat(getComputedStyle(firstName).fontSize)
+      / Number.parseFloat(getComputedStyle(restOfName).fontSize)
+  })
+  expect(heroNameScale).toBeCloseTo(1.5, 1)
   await expect(page.locator('svg circle[cx="500"][cy="310"]')).toHaveCount(0)
   const desktopCanvasHeight = await page.locator('#top > div:nth-of-type(2)').evaluate(
     (canvas) => canvas.getBoundingClientRect().height,
@@ -25,19 +31,19 @@ test('visitor can explore the portfolio and switch between light and dark themes
   await expect(page.getByText(/Start with what the user is trying to do/)).toBeVisible()
   await expect(page.locator('#case-sberbank')).toBeInViewport()
 
-  await page.getByRole('button', { name: /Systems/ }).click()
+  await page.getByRole('button', { name: '02 Systems' }).click()
   await expect(page.locator('#case-apple')).toBeInViewport()
   await page.getByRole('button', { name: /Interface craft/ }).click()
   await expect(page.locator('#case-apple')).toBeInViewport()
   await page.getByRole('button', { name: /People/ }).click()
   await expect(page.locator('#case-adia')).toBeInViewport()
 
-  await page.getByRole('button', { name: 'Switch to light mode' }).click()
+  await page.getByRole('button', { name: 'Switch theme' }).click()
   await expect(page.locator('[data-theme="light"]')).toBeVisible()
 
   await page.reload()
   await expect(page.locator('[data-theme="light"]')).toBeVisible()
-  await page.getByRole('button', { name: 'Switch to dark mode' }).click()
+  await page.getByRole('button', { name: 'Switch theme' }).click()
   await expect(page.locator('[data-theme="dark"]')).toBeVisible()
   await expect.poll(() =>
     page.locator('[data-theme="dark"]').evaluate((element) => getComputedStyle(element).getPropertyValue('--accent').trim()),
@@ -62,4 +68,135 @@ test('portfolio fits a narrow mobile viewport without horizontal overflow', asyn
   )
 
   expect(hasHorizontalOverflow).toBe(false)
+})
+
+test('voice mode is immersive, keyboard-dismissible, and fits a mobile viewport', async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 })
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, 'mediaDevices', {
+      configurable: true,
+      value: {
+        getUserMedia: async () => ({ getTracks: () => [{ stop() {} }] }),
+      },
+    })
+  })
+  await page.route('**/api/live-session', (route) => route.fulfill({
+    status: 503,
+    contentType: 'application/json',
+    body: JSON.stringify({ error: 'Realtime voice is not configured on this site yet.' }),
+  }))
+  const voiceModuleRequests: string[] = []
+  page.on('request', (request) => {
+    if (request.url().includes('/src/components/Playground.tsx')) {
+      voiceModuleRequests.push(request.url())
+    }
+  })
+  await page.goto('/')
+  expect(voiceModuleRequests).toHaveLength(0)
+  await page.getByRole('button', { name: 'Voice mode' }).click()
+
+  const dialog = page.getByRole('dialog', { name: 'Voice mode' })
+  await expect(dialog).toBeVisible()
+  expect(voiceModuleRequests).not.toHaveLength(0)
+  await expect(dialog.getByRole('heading', { name: 'Voice mode' })).toBeVisible()
+  await expect(dialog.getByRole('button', { name: 'Start voice session' })).toBeVisible()
+  await expect(dialog.getByText('Your microphone stays off until you start.')).toBeVisible()
+  await expect(dialog.getByRole('alert')).toHaveCount(0)
+  const subtitleSize = await dialog.getByText('Ask about my work, architecture, or experience.').evaluate(
+    (subtitle) => Number.parseFloat(getComputedStyle(subtitle).fontSize),
+  )
+  expect(subtitleSize).toBeGreaterThanOrEqual(13)
+  const transcriptTextSize = await dialog.getByText('“How do you approach architecture?”').evaluate(
+    (hint) => Number.parseFloat(getComputedStyle(hint).fontSize),
+  )
+  expect(transcriptTextSize).toBeGreaterThanOrEqual(13)
+  await dialog.getByRole('button', { name: 'Start voice session' }).click()
+  await expect(dialog.getByRole('alert')).toContainText(/not configured on this site yet/i)
+  await expect(dialog.getByTestId('voice-beam')).toBeVisible()
+  await expect(dialog.getByTestId('voice-beam').locator('> div > span')).toHaveCount(37)
+  await expect(dialog.getByText('Try asking')).toBeVisible()
+  const beamAnimation = await dialog.locator('[data-testid="voice-beam"] .beam-sweep').evaluate(
+    (orbit) => getComputedStyle(orbit).animationName,
+  )
+  expect(beamAnimation).not.toBe('none')
+
+  const hasHorizontalOverflow = await page.evaluate(
+    () => document.documentElement.scrollWidth > document.documentElement.clientWidth,
+  )
+  expect(hasHorizontalOverflow).toBe(false)
+
+  await page.keyboard.press('Escape')
+  await expect(dialog).toHaveCount(0)
+  await expect(page.getByRole('button', { name: 'Voice mode' })).toBeFocused()
+})
+
+test('voice mode has one concise header entry point and no promo section on the main page', async ({ page }) => {
+  await page.goto('/')
+
+  await expect(page.getByRole('button', { name: 'Voice mode' })).toBeVisible()
+  await expect(page.getByRole('link', { name: 'Playground' })).toHaveCount(0)
+  await expect(page.getByText('Ask about the work.')).toHaveCount(0)
+  await expect(page.getByRole('button', { name: 'Start a voice conversation' })).toHaveCount(0)
+})
+
+test('career index selects a role and updates its overview', async ({ page }) => {
+  await page.goto('/')
+  await page.locator('#career').scrollIntoViewIfNeeded()
+
+  const careerIndex = page.getByRole('region', { name: 'Career index' })
+  const logos = careerIndex.locator('img')
+  await expect(logos).toHaveCount(9)
+  const allLoaded = await logos.evaluateAll((images) =>
+    images.every((image) => image instanceof HTMLImageElement && image.complete && image.naturalWidth > 0),
+  )
+  expect(allLoaded).toBe(true)
+
+  await expect(page.getByRole('button', { name: 'Career chapters' })).toHaveCount(0)
+  await expect(page.getByRole('button', { name: 'Era-based bento' })).toHaveCount(0)
+  await expect(careerIndex.locator('.stepper-node')).toHaveCount(0)
+  const rowBorders = await careerIndex.locator('.career-entry').evaluateAll((rows) =>
+    rows.map((row) => getComputedStyle(row).borderTopWidth),
+  )
+  expect(rowBorders).toEqual(Array(8).fill('0px'))
+  const overview = page.getByRole('complementary', { name: 'Role overview' })
+  const overviewTextSize = await overview.locator('.index-overview p').evaluate(
+    (paragraph) => Number.parseFloat(getComputedStyle(paragraph).fontSize),
+  )
+  expect(overviewTextSize).toBeGreaterThanOrEqual(13)
+  await expect(overview).toContainText('Principal Architect')
+  const activeRole = careerIndex.getByRole('button', { name: /ADIA/ })
+  const inactiveRole = careerIndex.getByRole('button', { name: /Sberbank/ })
+  await expect(activeRole).toHaveAttribute('aria-pressed', 'true')
+  await expect(activeRole).toHaveCSS('transition-property', /background/)
+  await expect(activeRole).toHaveCSS('border-width', '0px')
+  const activeBackground = await activeRole.evaluate((element) => getComputedStyle(element).backgroundColor)
+  expect(activeBackground).not.toBe('rgba(0, 0, 0, 0)')
+  await page.getByRole('button', { name: /Sberbank/ }).click()
+  await expect(inactiveRole).toHaveAttribute('aria-pressed', 'true')
+  await expect(overview).toContainText('Lead Software Engineer')
+  await expect(overview).toContainText('data visualization and responsiveness')
+  const overviewAnimation = await overview.evaluate((element) => getComputedStyle(element).animationName)
+  expect(overviewAnimation).not.toBe('none')
+})
+
+test('voice mode explains when realtime credentials are not configured', async ({ page }) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, 'mediaDevices', {
+      configurable: true,
+      value: {
+        getUserMedia: async () => ({ getTracks: () => [{ stop() {} }] }),
+      },
+    })
+  })
+  await page.route('**/api/live-session', (route) => route.fulfill({
+    status: 503,
+    contentType: 'application/json',
+    body: JSON.stringify({ error: 'Realtime voice is not configured on this site yet.' }),
+  }))
+  await page.goto('/')
+  await page.getByRole('button', { name: 'Voice mode' }).click()
+  await page.getByRole('button', { name: 'Start voice session' }).click()
+
+  await expect(page.getByRole('alert')).toContainText(/not configured on this site yet/i)
+  await expect(page.getByText(/Unexpected end of JSON input/)).toHaveCount(0)
 })
