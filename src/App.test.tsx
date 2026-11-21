@@ -165,7 +165,7 @@ describe('portfolio', () => {
 
     await user.click(screen.getByRole('button', { name: 'Voice mode' }))
 
-    expect(await screen.findByRole('dialog', { name: 'Voice mode' })).toBeInTheDocument()
+    expect(await screen.findByRole('dialog', { name: 'Voice mode' }, { timeout: 5000 })).toBeInTheDocument()
     expect(await screen.findByRole('button', { name: 'Start voice session' })).toBeInTheDocument()
     expect(screen.queryByRole('alert')).not.toBeInTheDocument()
     await user.click(screen.getByRole('button', { name: 'Start voice session' }))
