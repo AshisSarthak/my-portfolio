@@ -12,6 +12,7 @@ import { SystemsAtlas } from './components/SystemsAtlas'
 import { Page } from './styles/PortfolioStyles'
 import { GlobalStyles } from './styles/GlobalStyles'
 import { isThemeName, themes, type ThemeName } from './theme'
+import { isAppRoute } from './paths'
 
 const themeStorageKey = 'ashis-portfolio-theme-v4'
 const VoiceMode = lazy(() =>
@@ -33,7 +34,7 @@ function App() {
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false)
   const openCommandPalette = useCallback(() => setCommandPaletteOpen(true), [])
   const closeCommandPalette = useCallback(() => setCommandPaletteOpen(false), [])
-  const isPlaygroundRoute = window.location.pathname.replace(/\/+$/, '') === '/playground'
+  const isPlaygroundRoute = isAppRoute(window.location.pathname, 'playground')
 
   useEffect(() => {
     window.localStorage.setItem(themeStorageKey, themeName)

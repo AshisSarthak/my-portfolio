@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { profile, work } from '../data/portfolio'
 import type { ThemeName } from '../theme'
+import { appPath, isAppRoute } from '../paths'
 import {
   PaletteDialog,
   PaletteEmpty,
@@ -44,7 +45,7 @@ export function CommandPalette({
   const [query, setQuery] = useState('')
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [feedback, setFeedback] = useState('')
-  const isPlaygroundRoute = window.location.pathname.replace(/\/+$/, '') === '/playground'
+  const isPlaygroundRoute = isAppRoute(window.location.pathname, 'playground')
 
   const commands: PaletteCommand[] = useMemo(() => [
     ...(isPlaygroundRoute
@@ -136,16 +137,16 @@ export function CommandPalette({
     setFeedback('')
     if (command.action === 'navigate' && command.target) {
       if (command.target === '/') {
-        window.location.assign('/')
+        window.location.assign(appPath('/'))
         return
       }
       if (command.target === 'playground') {
-        window.location.assign('/playground')
+        window.location.assign(appPath('/playground'))
         return
       }
       const target = document.getElementById(command.target)
       if (!target) {
-        window.location.assign(`/#${command.target}`)
+        window.location.assign(appPath(`/#${command.target}`))
         return
       }
       if (typeof target.scrollIntoView === 'function') {

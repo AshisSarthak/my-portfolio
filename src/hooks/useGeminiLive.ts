@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { appPath } from '../paths'
 
 export type LiveVoiceState = 'idle' | 'connecting' | 'listening' | 'thinking' | 'speaking'
 
@@ -189,7 +190,7 @@ export function useGeminiLive({ onUserTranscript, onAssistantTranscript }: UseGe
       }
       streamRef.current = mediaStream
 
-      const tokenResponse = await fetch('/api/live-session', {
+      const tokenResponse = await fetch(appPath('/api/live-session'), {
         method: 'POST',
         signal: tokenRequest.signal,
       })
@@ -237,7 +238,7 @@ export function useGeminiLive({ onUserTranscript, onAssistantTranscript }: UseGe
       audioContext = new AudioContext()
       audioContextRef.current = audioContext
       await audioContext.resume()
-      await audioContext.audioWorklet.addModule('/pcm-capture-processor.js')
+      await audioContext.audioWorklet.addModule(appPath('/pcm-capture-processor.js'))
       if (sessionId !== activeSessionRef.current) return
 
       const socket = new WebSocket(

@@ -4,6 +4,7 @@ import { loadEnv, type Plugin } from 'vite'
 import { onRequestPost } from './functions/api/live-session.ts'
 
 export default defineConfig(({ command, mode }) => ({
+  base: process.env.GITHUB_PAGES === 'true' ? '/my-portfolio/' : '/',
   plugins: [
     react(),
     ...(command === 'serve'

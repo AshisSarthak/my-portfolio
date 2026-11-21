@@ -49,6 +49,12 @@ npm run test:e2e
 
 GitHub Actions runs unit tests, lint, a production build, and the Playwright suite on pushes and pull requests targeting `main`.
 
+## Deploy on GitHub Pages
+
+The `Deploy GitHub Pages` workflow builds the app with the `/my-portfolio/` base path, publishes the `dist/` output, and creates a `404.html` fallback for the standalone `/playground` route. In the repository settings, open **Settings → Pages** and set **Build and deployment → Source** to **GitHub Actions**. Pushes to `main` then deploy automatically.
+
+GitHub Pages is static hosting, so the Gemini Live voice feature requires the Cloudflare Pages deployment, where the `functions/api/live-session.ts` endpoint can run. Cloudflare Pages remains available at [ashis-sarthak.pages.dev](https://ashis-sarthak.pages.dev).
+
 ## Deploy on Cloudflare Pages
 
 1. Push this repository to GitHub.

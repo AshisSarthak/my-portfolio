@@ -1,3 +1,5 @@
+import { appPath } from '../paths'
+
 export const profile = {
   name: 'Ashis Sarthak Singh',
   role: 'Principal Engineer & UI Architect',
@@ -63,7 +65,7 @@ export const work = [
 export const career = [
   {
     company: 'ADIA (via Intuitive)',
-    logo: '/company-logos/adia.png',
+    logo: appPath('/company-logos/adia.png'),
     role: 'Principal Architect',
     period: 'Mar 2026 — Present',
     location: 'Hyderabad, Telangana',
@@ -78,7 +80,7 @@ export const career = [
   },
   {
     company: 'Sberbank',
-    logo: '/company-logos/sberbank.jpg',
+    logo: appPath('/company-logos/sberbank.jpg'),
     role: 'Lead Software Engineer',
     period: 'Aug 2024 — Feb 2026',
     location: 'Bangalore, Karnataka',
@@ -93,7 +95,7 @@ export const career = [
   },
   {
     company: 'GlobalLogic',
-    logo: '/company-logos/globallogic.png',
+    logo: appPath('/company-logos/globallogic.png'),
     role: 'UI Engineering Consultant',
     period: 'Aug 2021 — Aug 2024',
     location: 'Hyderabad, Telangana',
@@ -108,7 +110,7 @@ export const career = [
   },
   {
     company: 'LogMeIn',
-    logo: '/company-logos/logmein.png',
+    logo: appPath('/company-logos/logmein.png'),
     role: 'Senior Software Engineer',
     period: 'Dec 2020 — Jul 2021',
     location: 'Remote / Bangalore',
@@ -123,7 +125,7 @@ export const career = [
   },
   {
     company: 'EPAM Systems',
-    logo: '/company-logos/epam.jpg',
+    logo: appPath('/company-logos/epam.jpg'),
     role: 'Senior Software Engineer',
     period: 'Feb 2019 — Dec 2020',
     location: 'Hyderabad, Telangana',
@@ -138,7 +140,7 @@ export const career = [
   },
   {
     company: 'Catchpoint',
-    logo: '/company-logos/catchpoint.png',
+    logo: appPath('/company-logos/catchpoint.png'),
     role: 'Software Engineer, Level 2',
     period: 'Apr 2017 — Nov 2018',
     location: 'Bangalore, Karnataka',
@@ -153,7 +155,7 @@ export const career = [
   },
   {
     company: 'Numerify',
-    logo: '/company-logos/numerify.jpg',
+    logo: appPath('/company-logos/numerify.jpg'),
     role: 'Software Development Engineer',
     period: 'Jul 2016 — Mar 2017',
     location: 'Bangalore, Karnataka',
@@ -168,7 +170,7 @@ export const career = [
   },
   {
     company: 'Infosys',
-    logo: '/company-logos/infosys.png',
+    logo: appPath('/company-logos/infosys.png'),
     role: 'Senior System Engineer',
     period: 'Apr 2013 — Jun 2016',
     location: 'Bhubaneswar / Hyderabad',

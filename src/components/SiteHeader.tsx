@@ -1,4 +1,5 @@
 import type { ThemeName } from '../theme'
+import { appPath } from '../paths'
 import { CommandLaunchButton, Header, HeaderInner, Navigation, ThemeToggle, VoiceLaunchButton, Wordmark } from '../styles/HeaderStyles'
 import { Container } from '../styles/PortfolioStyles'
 
@@ -21,15 +22,15 @@ export function SiteHeader({
     <Header>
       <Container>
         <HeaderInner>
-          <Wordmark href={isPlaygroundRoute ? '/' : '#top'} aria-label="Ashis Sarthak Singh, home">
+          <Wordmark href={isPlaygroundRoute ? appPath('/') : '#top'} aria-label="Ashis Sarthak Singh, home">
             Ashis Sarthak Singh<span>.</span>
           </Wordmark>
           <Navigation aria-label="Main navigation">
-            <a href={isPlaygroundRoute ? '/#work' : '#work'}>Work</a>
-            <a href="/playground" aria-current={isPlaygroundRoute ? 'page' : undefined}>Playground</a>
-            <a href={isPlaygroundRoute ? '/#career' : '#career'}>Journey</a>
-            <a href={isPlaygroundRoute ? '/#services' : '#services'}>How I help</a>
-            <a href={isPlaygroundRoute ? '/#contact' : '#contact'}>Contact</a>
+            <a href={isPlaygroundRoute ? appPath('/#work') : '#work'}>Work</a>
+            <a href={appPath('/playground')} aria-current={isPlaygroundRoute ? 'page' : undefined}>Playground</a>
+            <a href={isPlaygroundRoute ? appPath('/#career') : '#career'}>Journey</a>
+            <a href={isPlaygroundRoute ? appPath('/#services') : '#services'}>How I help</a>
+            <a href={isPlaygroundRoute ? appPath('/#contact') : '#contact'}>Contact</a>
           </Navigation>
           <div className="header-actions">
             <CommandLaunchButton
