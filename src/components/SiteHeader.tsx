@@ -1,28 +1,45 @@
 import type { ThemeName } from '../theme'
-import { Header, HeaderInner, Navigation, ThemeToggle, VoiceLaunchButton, Wordmark } from '../styles/HeaderStyles'
+import { CommandLaunchButton, Header, HeaderInner, Navigation, ThemeToggle, VoiceLaunchButton, Wordmark } from '../styles/HeaderStyles'
 import { Container } from '../styles/PortfolioStyles'
 
 interface SiteHeaderProps {
   themeName: ThemeName
   onThemeChange: (themeName: ThemeName) => void
   onVoiceOpen: () => void
+  onCommandOpen: () => void
+  isPlaygroundRoute: boolean
 }
 
-export function SiteHeader({ themeName, onThemeChange, onVoiceOpen }: SiteHeaderProps) {
+export function SiteHeader({
+  themeName,
+  onThemeChange,
+  onVoiceOpen,
+  onCommandOpen,
+  isPlaygroundRoute,
+}: SiteHeaderProps) {
   return (
     <Header>
       <Container>
         <HeaderInner>
-          <Wordmark href="#top" aria-label="Ashis Sarthak Singh, home">
+          <Wordmark href={isPlaygroundRoute ? '/' : '#top'} aria-label="Ashis Sarthak Singh, home">
             Ashis Sarthak Singh<span>.</span>
           </Wordmark>
           <Navigation aria-label="Main navigation">
-            <a href="#work">Work</a>
-            <a href="#career">Journey</a>
-            <a href="#approach">Approach</a>
-            <a href="#contact">Contact</a>
+            <a href={isPlaygroundRoute ? '/#work' : '#work'}>Work</a>
+            <a href="/playground" aria-current={isPlaygroundRoute ? 'page' : undefined}>Playground</a>
+            <a href={isPlaygroundRoute ? '/#career' : '#career'}>Journey</a>
+            <a href={isPlaygroundRoute ? '/#services' : '#services'}>How I help</a>
+            <a href={isPlaygroundRoute ? '/#contact' : '#contact'}>Contact</a>
           </Navigation>
           <div className="header-actions">
+            <CommandLaunchButton
+              type="button"
+              onClick={onCommandOpen}
+              aria-label="Open command palette"
+              aria-keyshortcuts="Meta+K Control+K"
+            >
+              <span>⌘ K</span>
+            </CommandLaunchButton>
             <VoiceLaunchButton type="button" onClick={onVoiceOpen} aria-label="Voice mode">
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M12 3v18M7.5 7v10M3 9.5v5M16.5 7v10M21 9.5v5" />

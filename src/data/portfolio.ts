@@ -16,8 +16,12 @@ export const work = [
     category: 'Engineering leadership',
     organization: 'Sberbank',
     title: 'Leading end-to-end delivery of a banking module.',
+    challenge:
+      'Deliver a responsive banking experience as one vertical in a core enterprise platform, while keeping frontend and backend work aligned.',
     description:
       'Owned frontend delivery of a banking module within a core enterprise platform, guiding a team of four to five engineers across the vertical. Delivered responsive, high-performance experiences with React, TypeScript, and GraphQL, while establishing modular architecture and frontend-backend integration patterns. Supported quality and team growth through technical reviews, mentorship, and cross-team knowledge sharing.',
+    outcome:
+      'Shipped responsive, high-performance banking experiences and established modular architecture and frontend-backend integration patterns for the vertical.',
     contribution: 'Module ownership · Frontend team leadership · Architecture',
     technologies: ['React', 'TypeScript', 'GraphQL', 'Feature-Sliced Design'],
     visual: 'banking-team',
@@ -28,8 +32,12 @@ export const work = [
     category: 'Platform architecture',
     organization: 'GlobalLogic · Apple Technologies',
     title: 'A modular frontend foundation for a complex dashboard.',
+    challenge:
+      'Make a data-heavy dashboard monorepo easier to evolve without sacrificing a consistent experience across product modules.',
     description:
       'Led module delivery and helped shape the architecture of a data-heavy dashboard monorepo. Focused on modular boundaries, maintainability, and a consistent experience across the product.',
+    outcome:
+      'Improved modularity and consistency across the dashboard, with performance profiling and shared UI patterns supporting ongoing module delivery.',
     contribution: 'Architecture · Module delivery · Performance',
     technologies: ['React', 'TypeScript', 'Monorepos'],
     visual: 'architecture',
@@ -40,8 +48,12 @@ export const work = [
     category: 'Engineering enablement',
     organization: 'ADIA (via Intuitive)',
     title: 'Helping teams deliver frontend work faster.',
+    challenge:
+      'Increase frontend delivery speed while preserving UI/UX principles, architectural review, and code-quality standards.',
     description:
       'Introduced AI-assisted development workflows across frontend streams, improving application delivery speed by 90% while maintaining UI/UX principles, architectural review, and code-quality standards.',
+    outcome:
+      'Improved application delivery speed by 90% through AI-assisted workflows, alongside shared governance and quality practices.',
     contribution: 'AI workflows · Technical governance · Mentorship',
     technologies: ['AI-assisted development', 'Architecture', 'Quality'],
     visual: 'collaboration',

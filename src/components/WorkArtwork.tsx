@@ -31,17 +31,28 @@ export function WorkArtwork({ type, title }: WorkArtworkProps) {
 
   if (type === 'architecture') {
     return (
-      <svg viewBox="0 0 360 200" role="img" aria-label={`${title}: modular architecture illustration`}>
-        <path className="art-line" d="M92 66H161M199 66h69M121 98v32m118-32v32M140 145h80" />
-        <rect className="art-frame" x="48" y="46" width="72" height="42" rx="4" />
-        <rect className="art-frame" x="144" y="46" width="72" height="42" rx="4" />
-        <rect className="art-frame" x="240" y="46" width="72" height="42" rx="4" />
-        <rect className="art-soft" x="64" y="60" width="40" height="5" rx="2" />
-        <rect className="art-accent" x="160" y="60" width="40" height="5" rx="2" />
-        <rect className="art-soft" x="256" y="60" width="40" height="5" rx="2" />
-        <rect className="art-frame" x="88" y="130" width="72" height="34" rx="4" />
-        <rect className="art-frame" x="200" y="130" width="72" height="34" rx="4" />
-        <circle className="art-accent" cx="180" cy="66" r="4" />
+      <svg viewBox="0 0 360 200" role="img" aria-label={`${title}: frontend monorepo with independent feature modules, shared UI components, and a GraphQL data layer`}>
+        <text className="art-heading" x="24" y="19">FRONTEND MONOREPO</text>
+        <rect className="art-boundary" x="20" y="29" width="320" height="93" rx="5" />
+        <text className="art-caption" x="32" y="44">FEATURE MODULES</text>
+
+        <rect className="art-frame" x="32" y="53" width="88" height="55" rx="4" />
+        <rect className="art-frame" x="136" y="53" width="88" height="55" rx="4" />
+        <rect className="art-frame" x="240" y="53" width="88" height="55" rx="4" />
+        <text className="art-label" x="76" y="70" textAnchor="middle">Dashboard</text>
+        <text className="art-label" x="180" y="70" textAnchor="middle">Insights</text>
+        <text className="art-label" x="284" y="70" textAnchor="middle">Workspace</text>
+        <path className="art-muted-line" d="M45 80h34m-34 8h58m-58 8h43M149 80h38m-38 8h58m-58 8h32M253 80h34m-34 8h58m-58 8h43" />
+
+        <path className="art-line" d="M76 122v8m104-8v8m104-8v8M76 130h208M180 130v6M100 136h160M100 136v12m160-12v12" />
+        <circle className="art-accent" cx="100" cy="144" r="3" />
+        <circle className="art-accent" cx="260" cy="144" r="3" />
+        <rect className="art-frame" x="32" y="148" width="136" height="34" rx="4" />
+        <rect className="art-frame" x="192" y="148" width="136" height="34" rx="4" />
+        <text className="art-label" x="100" y="163" textAnchor="middle">Shared UI · Material UI</text>
+        <text className="art-caption" x="100" y="175" textAnchor="middle">Design system</text>
+        <text className="art-label" x="260" y="163" textAnchor="middle">GraphQL</text>
+        <text className="art-caption" x="260" y="175" textAnchor="middle">Typed data layer</text>
       </svg>
     )
   }

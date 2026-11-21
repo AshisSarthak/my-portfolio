@@ -4,6 +4,8 @@ A responsive React and TypeScript portfolio built with Vite and styled-component
 
 The app is split into focused sections under `src/components/`, with resume-backed content in `src/data/portfolio.ts` and shared theme/design styles in `src/styles/`.
 
+The interactive performance and design-token lab is available as a separate page at `/playground`, keeping the homepage focused on portfolio work. The site-wide command palette opens with `⌘K` or `Ctrl+K` and can navigate to the lab, projects, and page sections.
+
 The portfolio includes an immersive Gemini Live speech-to-speech mode launched from the header. Visitors explicitly start the microphone and live connection after opening Voice mode; it includes an audio-reactive voice beam, live captions, project links, and spoken theme controls. Voice-only code is loaded only when the mode is opened. Career history is presented as an interactive company index, and the footer links to GitHub and LinkedIn.
 
 ### Configure realtime voice
@@ -58,7 +60,24 @@ GitHub Actions runs unit tests, lint, a production build, and the Playwright sui
 4. Save and deploy. Cloudflare Pages will deploy production from `main` and create preview deployments for pull requests. Add the encrypted `GEMINI_API_KEY` secret to the Pages production environment (and preview if desired) to enable voice sessions.
 5. In GitHub, protect `main` and require the **Test, lint, build, and browser tests** check before merging pull requests. This makes the GitHub Actions CI check a merge gate; Cloudflare Pages handles deployment from the connected branch.
 
-A custom domain is optional and needs a separately purchased domain name.
+### Use `ashissarthak.is-a.dev`
+
+The Cloudflare Pages project is `ashis-sarthak`, available at [ashis-sarthak.pages.dev](https://ashis-sarthak.pages.dev). To request `ashissarthak.is-a.dev`:
+
+1. Fork [is-a-dev/register](https://github.com/is-a-dev/register/fork) and add `domains/ashissarthak.json` to your fork:
+   ```json
+   {
+     "owner": {
+       "username": "AshisSarthak"
+     },
+     "records": {
+       "CNAME": "ashis-sarthak.pages.dev"
+     }
+   }
+   ```
+2. Open a pull request against `is-a-dev/register` and complete its current template yourself. The maintainers review registration requests; follow their [quickstart](https://docs.is-a.dev/quickstart/) and respond to requested changes.
+3. After the registration is merged, associate `ashissarthak.is-a.dev` with the `ashis-sarthak` Pages project using the [is-a.dev Cloudflare Pages guide](https://docs.is-a.dev/guides/cloudflare-pages/). Since `is-a.dev` is a public suffix, follow the guide's current instructions to add the domain through its Pages tool or Cloudflare API.
+4. Verify `https://ashissarthak.is-a.dev` loads and has an active HTTPS certificate. Future pushes to `main` deploy automatically through Cloudflare Pages.
 
 ## Production
 

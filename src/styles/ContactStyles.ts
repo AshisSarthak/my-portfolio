@@ -18,6 +18,25 @@ export const PrimaryLink = styled.a`
   }
 `
 
+export const ContactLinks = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  margin-top: 16px;
+
+  a {
+    color: var(--muted);
+    font-size: 0.7rem;
+    text-decoration-color: var(--rule);
+    text-underline-offset: 3px;
+  }
+
+  a:hover {
+    color: var(--accent);
+    text-decoration-color: var(--accent);
+  }
+`
+
 export const Signature = styled.a`
   display: grid;
   width: fit-content;

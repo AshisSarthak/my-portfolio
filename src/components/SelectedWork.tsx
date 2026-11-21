@@ -13,15 +13,19 @@ export function SelectedWork() {
         </SectionHeading>
         <CaseStudyList>
           {work.map((item) => (
-            <CaseStudy key={item.number} id={item.id}>
+            <CaseStudy key={item.id} id={item.id}>
               <WorkArtwork>
                 <WorkArtworkIllustration type={item.visual} title={item.title} />
               </WorkArtwork>
               <CaseStudyCopy>
-                <CaseStudyIndex>CASE {item.number} · {item.category}</CaseStudyIndex>
+                <CaseStudyIndex>{item.category}</CaseStudyIndex>
                 <span>{item.organization}</span>
                 <h3>{item.title}</h3>
-                <p>{item.description}</p>
+                <div className="case-story">
+                  <p><strong>Challenge</strong>{item.challenge}</p>
+                  <p><strong>Approach</strong>{item.description}</p>
+                  <p><strong>Outcome</strong>{item.outcome}</p>
+                </div>
                 <small>
                   <strong>My role:</strong> {item.contribution}
                   {item.technologies.length > 0 && (

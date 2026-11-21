@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { atlasAreas } from '../data/atlas'
 import { Container } from '../styles/PortfolioStyles'
 import {
+  AtlasActions,
   AtlasCanvas,
   AtlasHero,
   AtlasHint,
@@ -17,7 +18,10 @@ import {
   IdentityName,
   NodeSignal,
   NodeText,
+  HeroLead,
+  HeroStatus,
 } from '../styles/AtlasStyles'
+import { profile } from '../data/portfolio'
 
 const positions = {
   product: 'northwest',
@@ -34,9 +38,14 @@ export function SystemsAtlas() {
     <Container>
       <AtlasHero id="top">
         <AtlasIntro>
-          <div>
-            <p>Principal Engineer · UI Architect</p>
-            <p><strong>Hyderabad, India</strong> · Open to meaningful challenges</p>
+          <div className="hero-copy">
+            <HeroStatus>Principal Engineer · UI Architect <span /> Hyderabad, India</HeroStatus>
+            <HeroLead>I help teams build clear, fast frontend products.</HeroLead>
+            <p>{profile.introduction}</p>
+            <AtlasActions>
+              <a className="primary" href="#work">Explore selected work <span aria-hidden="true">↘</span></a>
+              <a className="secondary" href="#contact">Talk through a challenge <span aria-hidden="true">↗</span></a>
+            </AtlasActions>
           </div>
         </AtlasIntro>
         <AtlasCanvas>
@@ -70,7 +79,6 @@ export function SystemsAtlas() {
             >
               <NodeSignal aria-hidden="true" />
               <NodeText>
-                <small>{area.index}</small>
                 {area.label}
               </NodeText>
             </AtlasNode>
@@ -79,7 +87,7 @@ export function SystemsAtlas() {
         </AtlasCanvas>
 
         <FocusCard id="atlas-focus" aria-live="polite">
-          <FocusLabel>{activeArea.index} / {activeArea.label}</FocusLabel>
+          <FocusLabel>{activeArea.label}</FocusLabel>
           <FocusDetail>{activeArea.detail}</FocusDetail>
           <FocusLink href={activeArea.destination}>{activeArea.link} ↗</FocusLink>
         </FocusCard>

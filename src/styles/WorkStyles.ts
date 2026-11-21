@@ -83,6 +83,39 @@ export const WorkArtwork = styled.div`
     fill: var(--art-muted);
   }
 
+  .art-boundary {
+    fill: none;
+    stroke: var(--art-line);
+    stroke-width: 1;
+    stroke-dasharray: 3 3;
+  }
+
+  .art-heading {
+    fill: var(--accent);
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  .art-caption {
+    fill: var(--art-muted);
+    font-size: 7px;
+    letter-spacing: 0.3px;
+  }
+
+  .art-label {
+    fill: var(--ink);
+    font-size: 8px;
+    font-weight: 600;
+  }
+
+  .art-muted-line {
+    fill: none;
+    stroke: var(--art-line);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+  }
+
   @media (max-width: 720px) {
     min-height: 210px;
     border-right: 0;
@@ -114,12 +147,34 @@ export const CaseStudyCopy = styled.div`
     letter-spacing: -0.05em;
   }
 
-  p {
+  .case-story {
+    display: grid;
+    gap: 10px;
     max-width: 540px;
+  }
+
+  .case-story p {
     margin: 0;
     color: var(--muted);
-    font-size: 0.82rem;
-    line-height: 1.75;
+    font-size: 0.78rem;
+    line-height: 1.65;
+  }
+
+  .case-story strong {
+    display: block;
+    margin-bottom: 2px;
+    color: var(--accent);
+    font-size: 0.61rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .case-story p:last-child {
+    color: var(--ink);
+  }
+
+  .case-story p:last-child strong {
+    color: var(--accent);
   }
 
   small {
@@ -128,6 +183,12 @@ export const CaseStudyCopy = styled.div`
     color: var(--ink);
     font-size: 0.69rem;
     line-height: 1.6;
+  }
+
+  @media (max-width: 720px) {
+    small {
+      margin-top: 0;
+    }
   }
 `
 

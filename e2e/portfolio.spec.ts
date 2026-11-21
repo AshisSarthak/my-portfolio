@@ -21,17 +21,30 @@ test('visitor can explore the portfolio and switch between light and dark themes
   )
   expect(desktopCanvasHeight).toBeLessThan(600)
   await expect(page.getByRole('link', { name: 'Journey', exact: true })).toBeVisible()
+  await expect(page.getByRole('link', { name: 'How I help' })).toHaveAttribute('href', '#services')
+  await expect(page.getByRole('heading', { name: 'Bring me the messy, important part.' })).toBeVisible()
   await expect(page.getByRole('heading', { name: 'Leading end-to-end delivery of a banking module.' })).toBeVisible()
+  await expect(page.getByText('faster application delivery reported after AI-assisted frontend workflows')).toBeVisible()
   await expect(page.getByRole('img', { name: /banking module and frontend team illustration/ })).toBeVisible()
   await expect(page.getByRole('heading', { name: 'A modular frontend foundation for a complex dashboard.' })).toBeVisible()
   await expect(page.getByRole('link', { name: 'Ashis Sarthak Singh, return to top' })).toBeVisible()
   await expect(page.getByText('System health')).toHaveCount(0)
+  const heroLeadSize = await page.getByRole('heading', { name: 'I help teams build clear, fast frontend products.' })
+    .evaluate((heading) => Number.parseFloat(getComputedStyle(heading).fontSize))
+  expect(heroLeadSize).toBeLessThanOrEqual(62)
+  await expect(page.getByText('01 / Product')).toHaveCount(0)
+  await expect(page.getByText('05 / Interactive playground')).toHaveCount(0)
+
+  await page.getByRole('link', { name: 'Talk through a challenge' }).click()
+  await expect(page).toHaveURL(/#contact$/)
+  await expect(page.getByRole('heading', { name: "Let's make the complex feel clear." })).toBeVisible()
+  await page.goto('/')
 
   await page.getByRole('button', { name: /Product/ }).click()
   await expect(page.getByText(/Start with what the user is trying to do/)).toBeVisible()
   await expect(page.locator('#case-sberbank')).toBeInViewport()
 
-  await page.getByRole('button', { name: '02 Systems' }).click()
+  await page.getByRole('button', { name: 'Systems', exact: true }).click()
   await expect(page.locator('#case-apple')).toBeInViewport()
   await page.getByRole('button', { name: /Interface craft/ }).click()
   await expect(page.locator('#case-apple')).toBeInViewport()
@@ -130,13 +143,54 @@ test('voice mode is immersive, keyboard-dismissible, and fits a mobile viewport'
   await expect(page.getByRole('button', { name: 'Voice mode' })).toBeFocused()
 })
 
-test('voice mode has one concise header entry point and no promo section on the main page', async ({ page }) => {
+test('voice entry point remains separate from the homepage Playground route', async ({ page }) => {
   await page.goto('/')
 
   await expect(page.getByRole('button', { name: 'Voice mode' })).toBeVisible()
-  await expect(page.getByRole('link', { name: 'Playground' })).toHaveCount(0)
+  await expect(page.getByRole('link', { name: 'Playground' })).toHaveAttribute('href', '/playground')
+  await expect(page.getByRole('grid', { name: 'Virtualized sample project data' })).toHaveCount(0)
   await expect(page.getByText('Ask about the work.')).toHaveCount(0)
   await expect(page.getByRole('button', { name: 'Start a voice conversation' })).toHaveCount(0)
+})
+
+test('Playground has a dedicated route with interactive tokens and a virtualized grid', async ({ page }) => {
+  await page.goto('/playground')
+
+  await expect(page.getByRole('heading', { name: 'Playground' })).toBeVisible()
+  await expect(page.getByRole('grid', { name: 'Virtualized sample project data' })).toHaveAttribute('aria-rowcount', '100001')
+  await expect(page.getByRole('link', { name: 'Playground' })).toHaveAttribute('aria-current', 'page')
+
+  await page.getByLabel('Corner radius token').focus()
+  await page.keyboard.press('ArrowRight')
+  await expect(page.locator('#playground')).toHaveCSS('--lab-radius', '9px')
+
+  await page.getByRole('link', { name: 'Work', exact: true }).click()
+  await expect(page).toHaveURL('/#work')
+  await expect(page.getByRole('heading', { name: 'Not just what I built—how I made it better.' })).toBeVisible()
+})
+
+test('command palette searches actions and runs a keyboard-selected easter egg', async ({ page }) => {
+  await page.goto('/')
+  await page.keyboard.press('Control+k')
+
+  const palette = page.getByRole('dialog', { name: 'Command palette' })
+  await expect(palette).toBeVisible()
+  await page.getByRole('textbox', { name: 'Search commands' }).fill('surprise')
+  await page.keyboard.press('Enter')
+  await expect(page.getByRole('status')).toHaveText('You found the hidden command. Good interfaces reward curiosity.')
+
+  await page.keyboard.press('Escape')
+  await expect(palette).toHaveCount(0)
+})
+
+test('command palette opens the dedicated Playground route', async ({ page }) => {
+  await page.goto('/')
+  await page.keyboard.press('Control+k')
+  await page.getByRole('textbox', { name: 'Search commands' }).fill('playground')
+  await page.keyboard.press('Enter')
+
+  await expect(page).toHaveURL('/playground')
+  await expect(page.getByRole('grid', { name: 'Virtualized sample project data' })).toBeVisible()
 })
 
 test('career index selects a role and updates its overview', async ({ page }) => {
@@ -146,10 +200,10 @@ test('career index selects a role and updates its overview', async ({ page }) =>
   const careerIndex = page.getByRole('region', { name: 'Career index' })
   const logos = careerIndex.locator('img')
   await expect(logos).toHaveCount(9)
-  const allLoaded = await logos.evaluateAll((images) =>
-    images.every((image) => image instanceof HTMLImageElement && image.complete && image.naturalWidth > 0),
-  )
-  expect(allLoaded).toBe(true)
+  const activeLogo = careerIndex.getByRole('img', { name: 'ADIA (via Intuitive) logo' })
+  await expect.poll(() =>
+    activeLogo.evaluate((image) => image instanceof HTMLImageElement && image.complete && image.naturalWidth > 0),
+  ).toBe(true)
 
   await expect(page.getByRole('button', { name: 'Career chapters' })).toHaveCount(0)
   await expect(page.getByRole('button', { name: 'Era-based bento' })).toHaveCount(0)
@@ -175,6 +229,10 @@ test('career index selects a role and updates its overview', async ({ page }) =>
   await expect(inactiveRole).toHaveAttribute('aria-pressed', 'true')
   await expect(overview).toContainText('Lead Software Engineer')
   await expect(overview).toContainText('data visualization and responsiveness')
+  const selectedLogo = careerIndex.getByRole('img', { name: 'Sberbank logo' })
+  await expect.poll(() =>
+    selectedLogo.evaluate((image) => image instanceof HTMLImageElement && image.complete && image.naturalWidth > 0),
+  ).toBe(true)
   const overviewAnimation = await overview.evaluate((element) => getComputedStyle(element).animationName)
   expect(overviewAnimation).not.toBe('none')
 })

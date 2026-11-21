@@ -5,27 +5,90 @@ export const AtlasHero = styled.section`
 `
 
 export const AtlasIntro = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: end;
-  gap: 24px;
-  margin-bottom: 20px;
+  margin-bottom: clamp(24px, 4vw, 42px);
 
   p {
     margin: 0;
     color: var(--muted);
-    font-size: 0.78rem;
+    font-size: 0.88rem;
+    line-height: 1.7;
   }
 
-  strong {
-    color: var(--ink);
-    font-weight: 650;
+  .hero-copy {
+    max-width: 860px;
   }
 
   @media (max-width: 700px) {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 5px;
+    margin-bottom: 25px;
+  }
+`
+
+export const HeroStatus = styled.p`
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 12px !important;
+  color: var(--accent) !important;
+  font-size: 0.68rem !important;
+  font-weight: 750;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+
+  span {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--muted);
+  }
+`
+
+export const HeroLead = styled.h2`
+  max-width: 760px;
+  margin: 0 0 12px !important;
+  color: var(--ink) !important;
+  font-family: var(--display);
+  font-size: clamp(2.35rem, 4.5vw, 3.8rem) !important;
+  font-weight: 500;
+  letter-spacing: -0.05em;
+  line-height: 1.03 !important;
+`
+
+export const AtlasActions = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 21px;
+
+  a {
+    display: inline-flex;
+    min-height: 42px;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 0 14px;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    color: var(--ink);
+    font-size: 0.74rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: border-color 160ms ease, color 160ms ease, background 160ms ease;
+  }
+
+  a.primary {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+
+  a:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  a.primary:hover {
+    background: var(--accent-hover);
+    color: var(--on-accent);
   }
 `
 
@@ -169,7 +232,7 @@ export const AtlasNode = styled.button<{ $position: string; $active: boolean }>`
             ? 'bottom: 20%; left: 5%;'
             : 'right: 5%; bottom: 20%;'}
     grid-template-columns: 15px auto;
-    gap: 5px;
+    gap: 7px;
     min-height: 41px;
     padding: 5px 9px 5px 6px;
   }
@@ -194,23 +257,13 @@ export const NodeSignal = styled.span`
 `
 
 export const NodeText = styled.span`
-  display: grid;
+  display: block;
   font-size: 0.73rem;
   font-weight: 700;
   line-height: 1.2;
 
-  small {
-    color: var(--muted);
-    font-size: 0.56rem;
-    font-weight: 500;
-  }
-
   @media (max-width: 700px) {
     font-size: 0.65rem;
-
-    small {
-      font-size: 0.5rem;
-    }
   }
 `
 
